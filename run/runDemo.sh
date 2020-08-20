@@ -79,14 +79,17 @@ if [[ ! -f "$matName.2Dsvmatrix" ]]; then
    $execdir/mbir_ct -i $parName -j $parName -m $matName -f $matName
 else
    echo "System matrix file found: $matName.2Dsvmatrix"
+   touch $matName.2Dsvmatrix  # reset modification time
 fi
-
-touch $matName.lastused
 
 ### RECONSTRUCTION STAGE
 
-$execdir/mbir_ct -i $parName -j $parName -k $parName -s $sinoName -w $wgtName \
-   -r $recName -m $matName -e $matName 
+$execdir/mbir_ct -i $parName -j $parName -k $parName -s $sinoName -r $recName -m $matName -e $matName
+
+#OR this (weights are optional if you can't compute based on data)
+#$execdir/mbir_ct -i $parName -j $parName -k $parName -s $sinoName -w $wgtName -r $recName -m $matName -e $matName
+
+#Add this to redirect printed output to a file
 #   2>&1 | tee $(dirname $recName)/out
 
 exit 0
